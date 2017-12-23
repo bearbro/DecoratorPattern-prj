@@ -2,15 +2,13 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class MyWriter extends Writer {
+public class MyWriter extends IMyWriter {
 
     private ArrayList<String> illegalWords;//非法词汇
-    private Writer out;
 
 
     public MyWriter(Writer out) {
         super(out);
-        this.out = out;
         illegalWords=readIllegalWords("badwords.txt");//载入非法词汇
     }
 
@@ -20,23 +18,13 @@ public class MyWriter extends Writer {
 
     @Override
     public void write(char cbuf[], int off, int len) throws IOException {
-        out.write(pb(new StringBuffer(String.valueOf(cbuf, off, len))));
+        super.write(pb(new StringBuffer(String.valueOf(cbuf, off, len))));
     }
     public void write(String str) throws IOException {
-        out.write(pb(new StringBuffer(str)));
+        super.write(pb(new StringBuffer(str)));
     }
     public void write(String str, int off, int len) throws IOException {
-        out.write(pb(new StringBuffer(str.substring(off, len))));
-    }
-
-    @Override
-    public void flush() throws IOException {
-       out.flush();
-    }
-
-    @Override
-    public void close() throws IOException {
-        out.close();
+        super.write(pb(new StringBuffer(str.substring(off, len))));
     }
 
 
