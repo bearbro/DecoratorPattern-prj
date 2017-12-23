@@ -8,7 +8,7 @@ public class Main {
         String path = "orign";
         Scanner cin = new Scanner(System.in);
 //        path = cin.next();
-        path="a.txt";
+        path = "a.txt";
         showFile(path);
         String path2 = "out.txt";
         //屏蔽
@@ -26,10 +26,10 @@ public class Main {
                             new FileInputStream(path)
                     )
             );
-            String a=in.readLine();
-            while ( a!= null) {
+            String a = in.readLine();
+            while (a != null) {
                 out.println(a);
-                a=in.readLine();
+                a = in.readLine();
             }
             out.flush();
             out.close();
@@ -52,10 +52,10 @@ public class Main {
                             new FileInputStream(path)
                     )
             );
-            String a=in.readLine();
-            while ( a!= null) {
+            String a = in.readLine();
+            while (a != null) {
                 System.out.println(a);
-                a=in.readLine();
+                a = in.readLine();
             }
             in.close();
         } catch (FileNotFoundException e) {

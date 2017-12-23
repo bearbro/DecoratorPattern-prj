@@ -2,15 +2,10 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class MyWriter extends FilterWriter {
-    /**
-     * Create a new filtered writer.
-     *
-     * @param out a Writer object to provide the underlying stream.
-     * @throws NullPointerException if <code>out</code> is <code>null</code>
-     */
-    static ArrayList<String> illegalWords;//非法词汇
+public class MyWriter extends Writer {
 
+    static ArrayList<String> illegalWords;//非法词汇
+    protected Writer out;
     static {
         illegalWords = new ArrayList<String>();
         try {
@@ -27,16 +22,26 @@ public class MyWriter extends FilterWriter {
 
     protected MyWriter(Writer out) {
         super(out);
+        this.out = out;
 
     }
 
     public void write(char cbuf[], int off, int len) throws IOException {
         out.write(pb(new StringBuffer(String.valueOf(cbuf, off, len))));
-
     }
 
     public void write(String str, int off, int len) throws IOException {
         out.write(str, off, len);
+    }
+
+    @Override
+    public void flush() throws IOException {
+       out.flush();
+    }
+
+    @Override
+    public void close() throws IOException {
+        out.close();
     }
 
     public void write(int c) throws IOException {
