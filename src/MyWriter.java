@@ -4,34 +4,29 @@ import java.util.Scanner;
 
 public class MyWriter extends Writer {
 
-    static ArrayList<String> illegalWords;//非法词汇
-    protected Writer out;
-    static {
-        illegalWords = new ArrayList<String>();
-        try {
-            Scanner in = new Scanner(new BufferedReader(
-                    new InputStreamReader(
-                            new FileInputStream("badwords.txt"))));
-            while (in.hasNext()) {
-                illegalWords.add(in.next());
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
+    private ArrayList<String> illegalWords;//非法词汇
+    private Writer out;
 
-    protected MyWriter(Writer out) {
+
+    public MyWriter(Writer out) {
         super(out);
         this.out = out;
-
+        illegalWords=readIllegalWords("badwords.txt");//载入非法词汇
     }
 
+    public  void addIllegalWords(ArrayList<String> illegalWords) {
+        illegalWords.addAll(illegalWords);
+    }
+
+    @Override
     public void write(char cbuf[], int off, int len) throws IOException {
         out.write(pb(new StringBuffer(String.valueOf(cbuf, off, len))));
     }
-
+    public void write(String str) throws IOException {
+        out.write(pb(new StringBuffer(str)));
+    }
     public void write(String str, int off, int len) throws IOException {
-        out.write(str, off, len);
+        out.write(pb(new StringBuffer(str.substring(off, len))));
     }
 
     @Override
@@ -44,14 +39,12 @@ public class MyWriter extends Writer {
         out.close();
     }
 
-    public void write(int c) throws IOException {
-        out.write(c);
-    }
 
     //屏蔽函数
-    static String pb(StringBuffer sb) {
+    public static String pb(StringBuffer sb) {
         char ch = '*';
-        for (String oldStr : illegalWords) {
+
+        for (String oldStr :readIllegalWords("badwords.txt") ) {
             int i = sb.indexOf(oldStr);
             int oldLen = oldStr.length();
             while (i > -1) {
@@ -62,5 +55,19 @@ public class MyWriter extends Writer {
             }
         }
         return sb.toString();
+    }
+    public static   ArrayList<String> readIllegalWords(String illegalWordsFile) {
+        ArrayList nillegalWords = new ArrayList<String>();
+        try {
+            Scanner in = new Scanner(new BufferedReader(
+                    new InputStreamReader(
+                            new FileInputStream(illegalWordsFile))));
+            while (in.hasNext()) {
+                nillegalWords.add(in.next());
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return nillegalWords;
     }
 }
